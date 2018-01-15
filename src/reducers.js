@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux'
 
-export default combineReducers({
-  libraries: []
+import libraryReducer from './library/libraryReducer'
+
+const reducers = combineReducers({
+  libraries: libraryReducer
 })
+
+export default reducers
