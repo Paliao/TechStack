@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux'
 
-import libraryReducer from './library/libraryReducer'
+import LibraryReducer from './library/libraryReducer'
+import SelectReducer from './library/selectionReducer'
 
 const reducers = combineReducers({
-  libraries: libraryReducer
+  libraries: LibraryReducer,
+  selectedId: SelectReducer
 })
 
 export default reducers
