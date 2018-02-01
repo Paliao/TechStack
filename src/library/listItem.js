@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
+import { 
+  Text, StyleSheet,
+  TouchableWithoutFeedback, View,
+  LayoutAnimation, UIManager 
+} from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -8,11 +12,20 @@ import { CardSection } from '../common'
 
 class ListItem extends Component {
 
-  expandDescription() {
-    const { library, selectedId } = this.props
+  componentWillUpdate(){
+    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
+    LayoutAnimation.spring()
+  }
 
-    if( library.id === selectedId ) {
-      return <Text>{this.props.library.description}</Text>
+  expandDescription() {
+    const { library, expanded } = this.props
+
+    if( expanded ) {
+      return (
+        <CardSection>
+          <Text>{this.props.library.description}</Text>
+        </CardSection>
+      )
     }
   }
 
@@ -43,6 +56,10 @@ const styles = StyleSheet.create({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({selectLibrary}, dispatch)
-const mapStateToProps = state => ({ selectedId: state.selectedLibraryId.selectedId })
+const mapStateToProps = (state, ownProps) => {
+  const expanded = state.selectedLibraryId.selectedId === ownProps.library.id
+
+  return { expanded }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListItem)
