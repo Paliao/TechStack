@@ -7,8 +7,18 @@ import { selectLibrary } from './selectedActions'
 import { CardSection } from '../common'
 
 class ListItem extends Component {
+
+  expandDescription() {
+    const { library, selectedId } = this.props
+
+    if( library.id === selectedId ) {
+      return <Text>{this.props.library.description}</Text>
+    }
+  }
+
   render() {
     const { id, title } = this.props.library
+
     return(
       <TouchableWithoutFeedback 
         onPress={() => this.props.selectLibrary(id)}>
@@ -18,6 +28,7 @@ class ListItem extends Component {
               {title}
             </Text>
           </CardSection>
+          {this.expandDescription()}
         </View>
       </TouchableWithoutFeedback>
     )
@@ -32,5 +43,6 @@ const styles = StyleSheet.create({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({selectLibrary}, dispatch)
+const mapStateToProps = state => ({ selectedId: state.selectedLibraryId.selectedId })
 
-export default connect(null, mapDispatchToProps)(ListItem)
+export default connect(mapStateToProps, mapDispatchToProps)(ListItem)
